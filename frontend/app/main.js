@@ -31,6 +31,18 @@ const photosReducer = (state={}, action) => {
       state = {...state, roll: newPhotos }
       return state;
       break;
+    case "SHOW_PHOTO":
+      return state;
+      break;
+    case "SCROLL_RIGHT":
+      return state;
+      break;
+    case "SCROLL_LEFT":
+      return state;
+      break;
+    case "DESELECT_PHOTO":
+      return state;
+      break;
   }
   return state;
 };
@@ -39,37 +51,11 @@ const reducers = combineReducers({
   photos: photosReducer
 });
 
-// const reducer = function(state, action) {
-//   switch (action.type) {
-//     case "START_GAME":
-//       break;
-//     case "START_AGE_1":
-//       let cards = getAgeCards(1)
-//       let players = state.players.map((player) => player.hand)
-//       return Object.assign({}, state);
-//       break;
-//     case "START_AGE_2":
-//       return state;
-//       break;
-//     case "START_AGE_3":
-//       return state;
-//       break;
-//     case "STAGE_ACTION":
-//       break;
-//     case "PROCESS_ACTIONS":
-//       break;
-//     case "CALCULATE_POINTS":
-//       break;
-//   }
-//   return state;
-// }
-
 const store = createStore(reducers, initialState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 store.subscribe(() => {
   console.log("store changed", store.getState())
 })
-
 
 
 ReactDOM.render(<App />, document.getElementById('root'));
