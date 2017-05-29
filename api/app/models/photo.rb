@@ -8,7 +8,7 @@ class Photo < ApplicationRecord
   def as_json(*args)
     {
       id: id,
-      url: "/photos/#{id}.jpg"
+      url: "http://localhost:3001/photos/#{id}.jpg"
     }
   end
 

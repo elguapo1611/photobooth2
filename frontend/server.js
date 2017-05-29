@@ -1,4 +1,5 @@
 /* eslint no-console: 0 */
+const cors = require('cors')
 const path = require('path');
 const express = require('express');
 const webpack = require('webpack');
@@ -9,6 +10,8 @@ const config = require('./webpack.config.js');
 const isDeveloping = process.env.NODE_ENV !== 'production';
 const port = isDeveloping ? 3000 : process.env.PORT;
 const app = express();
+
+app.use(cors())
 
 if (isDeveloping) {
   const compiler = webpack(config);
