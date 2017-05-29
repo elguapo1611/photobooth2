@@ -10,70 +10,6 @@ const isDeveloping = process.env.NODE_ENV !== 'production';
 const port = isDeveloping ? 3000 : process.env.PORT;
 const app = express();
 
-const WebSocketServer = require('websocket').server;
-const http = require('http');
-const exec = require('child_process').exec;
-const sys = require('sys')
-
-function puts(error, stdout, stderr) {
-  console.log(stdout)
-  console.log(stderr)
-  return stdout
-}
-
-function takePhoto(error, stdout, stderr) {
-  return "asdfasdf.jpg"
-}
-
-const server = http.createServer(function(request, response) {
-  console.log((new Date()) + ' Received request for ' + request.url);
-  response.writeHead(404);
-  response.end();
-});
-
-server.listen(8080, function() {
-  console.log((new Date()) + ' Web Socket Server is listening on port 8080');
-});
-
-wsServer = new WebSocketServer({
-  httpServer: server,
-  autoAcceptConnections: false
-});
-
-function originIsAllowed(origin) {
-  console.log(origin + " origin");
-  // put logic here to detect whether the specified origin is allowed. 
-  return true;
-}
-
-exec("killall PTPCamera", puts);
-wsServer.on('request', function(request) {
-    if (!originIsAllowed(request.origin)) {
-      // Make sure we only accept requests from an allowed origin 
-      request.reject();
-      console.log((new Date()) + ' Connection from origin ' + request.origin + ' rejected.');
-      return;
-    }
-    var connection = request.accept('echo-protocol', request.origin);
-    console.log((new Date()) + ' Connection accepted.');
-    connection.on('message', function(message) {
-        if (message.type === 'utf8') {
-          console.log("outside")
-          exec("env LANG=C gphoto2 --debug --debug-logfile=my-logfile.txt --capture-image-and-download", function (error, stdout, stderr) {
-            console.log("here")
-            connection.sendUTF(stdout);
-          });
-
-          
-        }
-    });
-    connection.on('close', function(reasonCode, description) {
-        console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
-    });
-});
-
-
-
 if (isDeveloping) {
   const compiler = webpack(config);
   const middleware = webpackMiddleware(compiler, {
@@ -108,3 +44,4 @@ app.listen(port, '0.0.0.0', function onStart(err) {
   }
   console.info('==> 🌎 Listening on port %s. Open up http://0.0.0.0:%s/ in your browser.', port, port);
 });
+
