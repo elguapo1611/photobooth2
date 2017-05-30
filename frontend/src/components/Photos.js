@@ -4,13 +4,13 @@ import Photo from './Photo'
 import { onPhotoKeyPress } from '../actions'
 
 const Photos = ({photos}) => (
-  <ul tabIndex="0">
+  <ul>
     {photos.map((photo, i) =>
         <Photo
           key={photo.id}
           url={photo.url}
           id={photo.id}
-          selected={false}
+          selected={photo.selected}
         />
 
     )}

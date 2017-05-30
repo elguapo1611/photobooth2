@@ -4,12 +4,12 @@ import { connect } from 'react-redux'
 import { takePhoto, fetchPhotos, onPhotoKeyPress } from '../actions'
 import Photo from '../components/Photo'
 import Photos from '../components/Photos'
+require("../../public/main.css")
 
 class App extends Component {
   handleClick = e => {
     const { dispatch, photos } = this.props
-    if (e.key == "Enter") {
-      console.log(e)
+    if (e.key == "Enter" && !this.props.isFetching) {
       dispatch(takePhoto())
     }
   }
@@ -26,27 +26,17 @@ class App extends Component {
     dispatch(fetchPhotos())
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.photos !== this.props.photos) {
-      const { dispatch, selectedReddit } = nextProps
-      // dispatch(fetchPhotos())
-    }
-  }
-
-  // handleRefreshClick = e => {
-  //   e.preventDefault()
-
-  //   const { dispatch, selectedReddit } = this.props
-  //   dispatch(invalidateReddit(selectedReddit))
-  //   dispatch(fetchPostsIfNeeded(selectedReddit))
-  // }
-  
-
   render() {
-
     const { photos, isFetching } = this.props
+
+    var loading = null;
+    if (isFetching) {
+      loading = <h1>loading</h1>
+    }
+
     return (
-      <div tabIndex={0} onKeyUp={this.handleClick}>
+      <div onKeyUp={this.handleClick}>
+        {loading}
         <Photos photos={photos} />
       </div>
     )
@@ -54,14 +44,14 @@ class App extends Component {
 }
 
 const mapStateToProps = state => {
-  
   var photos = []
   if (state.photosReducer && state.photosReducer.photos) {
     photos = state.photosReducer.photos
   }
-
-  const isFetching = false
-  
+  var isFetching = false
+  if (state.photosReducer && state.photosReducer.isFetching) {
+    isFetching = state.photosReducer.isFetching
+  }
   return {
     photos,
     isFetching

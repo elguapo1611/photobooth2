@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import classNames from 'classnames/bind';
 
 const Photo = ({ url, id, selected }) => (
-  <li id="photo-{id}" className="photo">
-    <img src={url} width="100" />
+  <li id={"photo-" + id} className={"photo" + (selected ? " selected" : "")}>
+    <img src={url} />
   </li>
 )
 

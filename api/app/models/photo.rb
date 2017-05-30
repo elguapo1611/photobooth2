@@ -1,8 +1,12 @@
 class Photo < ApplicationRecord
+  require 'gphoto2'
+
   PHOTO_PATH = './public/photos'
   def self.take_photo
-    `gphoto2 --capture-image-and-download --keep --set-config /main/imgsettings/imageformat=0 --filename=#{PHOTO_PATH}/#{next_id}.jpg`
-    create
+    file = camera.capture
+    photo = create
+    file.save("./public/photos/#{photo.id}.jpg")
+    sleep(0.5)
   end
 
   def as_json(*args)
@@ -14,5 +18,9 @@ class Photo < ApplicationRecord
 
   def self.next_id
     (Photo.maximum(:id) || 0) + 1
+  end
+
+  def self.camera
+    @camera ||= GPhoto2::Camera.first
   end
 end

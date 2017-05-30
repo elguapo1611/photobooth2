@@ -3,68 +3,30 @@ import {
   RECEIVE_PHOTOS, TAKE_PHOTO, REQUEST_PHOTOS, FETCH_PHOTOS
 } from '../actions'
 
-// const posts = (state = {
-//   isFetching: false,
-//   didInvalidate: false,
-//   items: []
-// }, action) => {
-//   console.log(action.type)
-//   switch (action.type) {
-//     case INVALIDATE_REDDIT:
-//       return {
-//         ...state,
-//         didInvalidate: true
-//       }
-//     case REQUEST_POSTS:
-//       return {
-//         ...state,
-//         isFetching: true,
-//         didInvalidate: false
-//       }
-//     case RECEIVE_PHOTOS:
-//       console.log("wtf")
-//       return {
-//         ...state,
-//         isFetching: false
-//       }
-//     case RECEIVE_POSTS:
-//       return {
-//         ...state,
-//         isFetching: false,
-//         didInvalidate: false,
-//         items: action.posts,
-//         lastUpdated: action.receivedAt
-//       }
-//     default:
-//       return state
-//   }
-// }
-
 const photosReducer = (state = { }, action) => {
+  console.log(action.isFetching)
   switch (action.type) {
     case FETCH_PHOTOS:
       return {
         ...state,
-        action
+        isFetching: true
       }
     case REQUEST_PHOTOS:
       return {
         ...state,
-        action
+        isFetching: true
       }
     case RECEIVE_PHOTOS:
+      var photos = action.photos.map((proj) => {
+        return proj
+      })
+      photos[0].selected = true
       return {
         ...state,
-        photos: action.photos
+        photos: photos,
+        isFetching: false
       }
 
-  //   case INVALIDATE_REDDIT:
-  //   case RECEIVE_POSTS:
-  //   case REQUEST_POSTS:
-  //     return {
-  //       ...state,
-  //       [action.reddit]: posts(state[action.reddit], action)
-  //     }
     default:
       return state
   }
