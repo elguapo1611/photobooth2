@@ -4,7 +4,6 @@ import {
 } from '../actions'
 
 const photosReducer = (state = { }, action) => {
-  console.log(action.isFetching)
   switch (action.type) {
     case FETCH_PHOTOS:
       return {
@@ -17,10 +16,12 @@ const photosReducer = (state = { }, action) => {
         isFetching: true
       }
     case RECEIVE_PHOTOS:
-      var photos = action.photos.map((proj) => {
-        return proj
+      var photos = action.photos.map((photo, idx) => {
+        if (idx === 0) {
+          return Object.assign({ selected: true}, photo)
+        }
+        return Object.assign({}, photo)
       })
-      photos[0].selected = true
       return {
         ...state,
         photos: photos,
