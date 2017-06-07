@@ -57,20 +57,33 @@ ul {
   list-style-type: none;
 }
 
-/*ul li {
-  float: left;
-  margin-bottom: 0;
-  width: 200px;
-  height: 133px;
-}*/
-
 img {
-  width: 200px;
-  height: 133px;
+  width: 100%;
 }
+
 .photo {
   background: #f00;
 }
+
 .selected {
   background: #f00;
+}
+
+h2 {
+  font-family: Verdana;
+  font-size: 360px;
+  text-align: center;
+  height: 100%;
+  display: block;
+  left: 0;
+  line-height: 200px;
+  margin: auto;
+  margin-top: -100px;
+  position: absolute;
+  top: 50%;
+  width: 100%;
+
+  -webkit-text-stroke: 1px black;
+  color: #ccc;
+  
 }

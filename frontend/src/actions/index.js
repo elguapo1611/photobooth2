@@ -2,15 +2,26 @@ export const TAKE_PHOTO = 'TAKE_PHOTO'
 export const RECEIVE_PHOTOS = 'RECEIVE_PHOTOS'
 export const REQUEST_PHOTOS = 'REQUEST_PHOTOS'
 export const FETCH_PHOTOS = 'FETCH_PHOTOS'
+export const START_COUNTDOWN = 'START_COUNTDOWN'
+export const DECREMENT_COUNTDOWN = 'DECREMENT_COUNTDOWN'
+export const COUNTDOWN_COMPLETE = 'COUNTDOWN_COMPLETE'
 
 var corsOptionsDelegate = function (req, callback) {
   corsOptions = { origin: false } // disable CORS for this request 
   callback(null, corsOptions) // callback expects two parameters: error and options 
 }
 
+export const decrementCountdown = count => ({
+  type: DECREMENT_COUNTDOWN,
+  isCountingDown: true,
+  countdown: count
+})
+
 export const receivedPhotos = (photos) => ({
   type: RECEIVE_PHOTOS,
   isFetching: false,
+  isCountingDown: false,
+  countdown: "",
   photos
 })
 
@@ -20,11 +31,35 @@ export const requestPhotos = photos => ({
   photos
 })
 
+export const startCountdown = count => ({
+  type: START_COUNTDOWN,
+  isCountingDown: true,
+  countdown: count
+})
+
+export const countDownComplete = count => ({
+  type: COUNTDOWN_COMPLETE,
+  countdown: "cheese"
+})
+
 export const takePhoto = photos => dispatch => {
-  dispatch(requestPhotos(photos))
-  return fetch('http://localhost:3001/photos', { method: 'POST'})
-    .then(response => response.json())
-    .then(json => dispatch(receivedPhotos(json)))
+  var count = 3
+  dispatch(startCountdown(3 + ""))
+  let countDownInterval
+  countDownInterval = setInterval(() => {
+    if (count === 1) {
+      dispatch(countDownComplete())
+      clearInterval(countDownInterval)
+      setTimeout(() => {
+        return fetch('http://localhost:3001/photos', { method: 'POST'})
+          .then(response => response.json())
+          .then(json => dispatch(receivedPhotos(json)))
+      }, 10)
+    } else {
+      count = count - 1
+      dispatch(decrementCountdown(count + ""))
+    }
+  }, 1000)
 }
 
 export const fetchPhotos = photos => dispatch => {

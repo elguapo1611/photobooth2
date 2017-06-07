@@ -1,15 +1,38 @@
 import { combineReducers } from 'redux'
 import {
-  RECEIVE_PHOTOS, TAKE_PHOTO, REQUEST_PHOTOS, FETCH_PHOTOS
+  COUNTDOWN_COMPLETE,
+  DECREMENT_COUNTDOWN,
+  START_COUNTDOWN,
+  RECEIVE_PHOTOS,
+  TAKE_PHOTO,
+  REQUEST_PHOTOS,
+  FETCH_PHOTOS
 } from '../actions'
 
 const photosReducer = (state = { }, action) => {
   switch (action.type) {
+    case COUNTDOWN_COMPLETE:
+      return {
+        ...state,
+        countdown: action.countdown,
+      }
+    case DECREMENT_COUNTDOWN:
+      return {
+        ...state,
+        countdown: action.countdown
+      }
+    case START_COUNTDOWN:
+      return {
+        ...state,
+        countdown: action.countdown,
+        isCountingDown: true
+      }
     case FETCH_PHOTOS:
       return {
         ...state,
         isFetching: true
       }
+
     case REQUEST_PHOTOS:
       return {
         ...state,
@@ -25,7 +48,9 @@ const photosReducer = (state = { }, action) => {
       return {
         ...state,
         photos: photos,
-        isFetching: false
+        countdown: "",
+        isFetching: false,
+        isCountingDown: false
       }
 
     default:
