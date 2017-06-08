@@ -6,11 +6,32 @@ import {
   RECEIVE_PHOTOS,
   TAKE_PHOTO,
   REQUEST_PHOTOS,
-  FETCH_PHOTOS
+  FETCH_PHOTOS,
+  SCROLL_RIGHT,
+  SCROLL_LEFT
 } from '../actions'
+
+var scrollToElement = require('scroll-to-element');
+ 
 
 const photosReducer = (state = { }, action) => {
   switch (action.type) {
+    case SCROLL_RIGHT:
+      let rightIndex = state.selectedPhotoIndex ? state.selectedPhotoIndex + 1 : 1
+      let finalRightIndex = rightIndex < state.photos.length ? rightIndex : state.photos.length - 1
+      scrollToElement('#photo-' + state.photos[finalRightIndex].id)
+      return {
+        ...state,
+        selectedPhotoIndex: finalRightIndex
+      }
+    case SCROLL_LEFT:
+      let leftIndex = state.selectedPhotoIndex ? state.selectedPhotoIndex - 1 : 0
+      let finalLeftIndex = leftIndex < 0 ? 0 : leftIndex
+      scrollToElement('#photo-' + state.photos[finalLeftIndex].id)
+      return {
+        ...state,
+        selectedPhotoIndex: finalLeftIndex
+      }
     case COUNTDOWN_COMPLETE:
       return {
         ...state,

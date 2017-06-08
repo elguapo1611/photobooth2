@@ -5,6 +5,19 @@ export const FETCH_PHOTOS = 'FETCH_PHOTOS'
 export const START_COUNTDOWN = 'START_COUNTDOWN'
 export const DECREMENT_COUNTDOWN = 'DECREMENT_COUNTDOWN'
 export const COUNTDOWN_COMPLETE = 'COUNTDOWN_COMPLETE'
+export const SCROLL_RIGHT = 'SCROLL_RIGHT'
+export const SCROLL_LEFT = 'SCROLL_LEFT'
+
+
+export const scrolledLeft = () => ({
+  type: SCROLL_LEFT,
+  isScrolling: true
+})
+
+export const scrolledRight = () => ({
+  type: SCROLL_RIGHT,
+  isScrolling: true
+})
 
 var corsOptionsDelegate = function (req, callback) {
   corsOptions = { origin: false } // disable CORS for this request 
@@ -41,6 +54,16 @@ export const countDownComplete = count => ({
   type: COUNTDOWN_COMPLETE,
   countdown: "cheese"
 })
+
+export const scrollLeft = () => dispatch => {
+  console.log("scrolling left")
+  dispatch(scrolledLeft())
+}
+
+export const scrollRight = () => dispatch => {
+  console.log("scrolling right")
+  dispatch(scrolledRight())
+}
 
 export const takePhoto = photos => dispatch => {
   var count = 3

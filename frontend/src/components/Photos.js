@@ -4,7 +4,7 @@ import Photo from './Photo'
 import { onPhotoKeyPress } from '../actions'
 
 const Photos = ({photos}) => (
-  <ul>
+  <ul id="photo-list">
     {photos.map((photo, i) =>
         <Photo
           key={photo.id}

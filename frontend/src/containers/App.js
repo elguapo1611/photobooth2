@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { takePhoto, fetchPhotos, onPhotoKeyPress } from '../actions'
+import { scrollRight, scrollLeft, takePhoto, fetchPhotos, onPhotoKeyPress } from '../actions'
 import Photo from '../components/Photo'
 import Photos from '../components/Photos'
 import Countdown from '../components/Countdown'
@@ -10,10 +10,17 @@ require("../../public/main.css")
 class App extends Component {
   handleClick = e => {
     const { dispatch, photos, isCountingDown } = this.props
-    console.log(isCountingDown)
-    if (e.key == "Enter" && !this.props.isFetching && !this.props.isCountingDown) {
-      dispatch(takePhoto())
+    if (this.props.isFetching || this.props.isCountingDown) {
+      return
     }
+    if (e.key == "Enter") {
+      dispatch(takePhoto())
+    } else if (e.key == "ArrowRight") {
+      dispatch(scrollRight())
+    } else if (e.key === "ArrowLeft") {
+      dispatch(scrollLeft())
+    }
+
   }
 
   static propTypes = {
@@ -52,6 +59,7 @@ class App extends Component {
 }
 
 const mapStateToProps = state => {
+  let selectedPhotoIndex = state.photosReducer.selectedPhotoIndex ? state.photosReducer.selectedPhotoIndex : 0
   let photos = state.photosReducer.photos ? state.photosReducer.photos : []
   let isFetching = state.photosReducer.isFetching ? state.photosReducer.isFetching : false
   let countdown = state.photosReducer.countdown
@@ -61,7 +69,8 @@ const mapStateToProps = state => {
     photos,
     isFetching,
     countdown,
-    isCountingDown
+    isCountingDown,
+    selectedPhotoIndex
   }
 }
 
