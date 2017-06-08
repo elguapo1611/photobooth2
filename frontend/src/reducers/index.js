@@ -43,8 +43,10 @@ const photosReducer = (state = { }, action) => {
         countdown: action.countdown
       }
     case START_COUNTDOWN:
+      scrollToElement('#photo-' + state.photos[0].id, {duration: 200})
       return {
         ...state,
+        selectedPhotoIndex: 0,
         countdown: action.countdown,
         isCountingDown: true
       }
