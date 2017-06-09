@@ -17,16 +17,28 @@ var scrollToElement = require('scroll-to-element');
 const photosReducer = (state = { }, action) => {
   switch (action.type) {
     case SCROLL_RIGHT:
-      let rightIndex = state.selectedPhotoIndex ? state.selectedPhotoIndex + 1 : 1
-      let finalRightIndex = rightIndex < state.photos.length ? rightIndex : state.photos.length - 1
-      scrollToElement('#photo-' + state.photos[finalRightIndex].id)
+      let finalRightIndex
+      if (state.isFetching || state.isCountingDown) {
+        finalRightIndex = 0
+      } else {
+        let rightIndex = state.selectedPhotoIndex ? state.selectedPhotoIndex + 1 : 1
+        finalRightIndex = rightIndex < state.photos.length ? rightIndex : state.photos.length - 1
+      }
+      scrollToElement('#photo-' + state.photos[finalRightIndex].id, {duration: 500})
+
       return {
         ...state,
         selectedPhotoIndex: finalRightIndex
       }
     case SCROLL_LEFT:
-      let leftIndex = state.selectedPhotoIndex ? state.selectedPhotoIndex - 1 : 0
-      let finalLeftIndex = leftIndex < 0 ? 0 : leftIndex
+      let finalLeftIndex
+      if (state.isFetching || state.isCountingDown) {
+        console.log("scrolling left when is fetching is true")
+        finalLeftIndex = 0
+      } else {
+        let leftIndex = state.selectedPhotoIndex ? state.selectedPhotoIndex - 1 : 0
+        finalLeftIndex = leftIndex < 0 ? 0 : leftIndex
+      }
       scrollToElement('#photo-' + state.photos[finalLeftIndex].id)
       return {
         ...state,
@@ -43,7 +55,8 @@ const photosReducer = (state = { }, action) => {
         countdown: action.countdown
       }
     case START_COUNTDOWN:
-      scrollToElement('#photo-' + state.photos[0].id, {duration: 200})
+      console.log("start countdown")
+      scrollToElement('#photo-' + state.photos[0].id, {duration: 500})
       return {
         ...state,
         selectedPhotoIndex: 0,
